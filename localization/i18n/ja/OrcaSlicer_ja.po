@@ -380,31 +380,31 @@ msgid "Drag"
 msgstr "Drag"
 
 msgid "Draw cut line"
-msgstr ""
+msgstr "カットラインを描く"
 
 msgid "Left click"
 msgstr "左クリック"
 
 msgid "Add connector"
-msgstr "Add connector"
+msgstr "コネクターを追加"
 
 msgid "Right click"
 msgstr "右クリック"
 
 msgid "Remove connector"
-msgstr "Remove connector"
+msgstr "コネクターを削除"
 
 msgid "Move connector"
-msgstr "Move connector"
+msgstr "コネクターを移動"
 
 msgid "Add connector to selection"
-msgstr "Add connector to selection"
+msgstr "コネクターを選択リストに追加"
 
 msgid "Remove connector from selection"
-msgstr "Remove connector from selection"
+msgstr "コネクターを選択リストから削除"
 
 msgid "Select all connectors"
-msgstr "Select all connectors"
+msgstr "すべてのコネクターを選択"
 
 msgid "Cut"
 msgstr "カット"
@@ -413,7 +413,7 @@ msgid "Rotate cut plane"
 msgstr "カット面の回転"
 
 msgid "Remove connectors"
-msgstr "Remove connectors"
+msgstr "コネクターの削除"
 
 msgid "Bulge"
 msgstr "Bulge"
@@ -1290,7 +1290,7 @@ msgid "Delete"
 msgstr "削除"
 
 msgid "Restart selection"
-msgstr "Restart selection"
+msgstr "選択のやり直し"
 
 msgid "Esc"
 msgstr "Esc"
@@ -1299,14 +1299,14 @@ msgid "Cancel a feature until exit"
 msgstr ""
 
 msgid "Measure"
-msgstr "Measure"
+msgstr "計測"
 
 msgid ""
 "Please confirm explosion ratio = 1,and please select at least one object"
 msgstr ""
 
 msgid "Please select at least one object."
-msgstr ""
+msgstr "少なくとも一つの物体を選択してください"
 
 msgid "Edit to scale"
 msgstr "Edit to scale"
@@ -1341,7 +1341,7 @@ msgid ""
 msgstr ""
 
 msgid "Face"
-msgstr ""
+msgstr "面"
 
 msgid " (Fixed)"
 msgstr ""
@@ -1370,16 +1370,16 @@ msgid "Perpendicular distance"
 msgstr "Perpendicular distance"
 
 msgid "Distance"
-msgstr "Distance"
+msgstr "距離"
 
 msgid "Direct distance"
-msgstr "Direct distance"
+msgstr "直線距離"
 
 msgid "Distance XYZ"
 msgstr "Distance XYZ"
 
 msgid "Parallel"
-msgstr ""
+msgstr "平行"
 
 msgid "Center coincidence"
 msgstr ""
@@ -1611,7 +1611,7 @@ msgstr ""
 "設定ウィザードで保存先フォルダーを選択してください。"
 
 msgid "Import File"
-msgstr "Import File"
+msgstr "ファイルのインポート"
 
 msgid "Choose files"
 msgstr "ファイルを選択"
@@ -1762,7 +1762,7 @@ msgid "Voron Cube"
 msgstr ""
 
 msgid "Stanford Bunny"
-msgstr ""
+msgstr "スタンフォードバニー"
 
 msgid "Orca String Hell"
 msgstr ""
@@ -1809,7 +1809,7 @@ msgid "Export as one STL"
 msgstr "1つのSTLとしてエクスポート"
 
 msgid "Export as STLs"
-msgstr "Export as STLs"
+msgstr "複数のSTLファイルとしてエクスポート"
 
 msgid "Reload from disk"
 msgstr "ディスクから再読込み"
@@ -2324,16 +2324,16 @@ msgid "Custom"
 msgstr "カスタム"
 
 msgid "Pause:"
-msgstr "Pause:"
+msgstr "一時停止:"
 
 msgid "Custom Template:"
 msgstr "Custom Template:"
 
 msgid "Custom G-code:"
-msgstr "Custom G-code:"
+msgstr "カスタムG-code:"
 
 msgid "Custom G-code"
-msgstr "カスタム G-code"
+msgstr "カスタムG-code"
 
 msgid "Enter Custom G-code used on current layer:"
 msgstr "現在の積層にカスタムG-codeを追加"
@@ -2375,10 +2375,10 @@ msgid "Delete Custom Template"
 msgstr "Delete Custom Template"
 
 msgid "Edit Custom G-code"
-msgstr "Edit Custom G-code"
+msgstr "カスタムG-codeを編集"
 
 msgid "Delete Custom G-code"
-msgstr "Delete Custom G-code"
+msgstr "カスタムG-codeを削除"
 
 msgid "Delete Filament Change"
 msgstr "Delete Filament Change"
