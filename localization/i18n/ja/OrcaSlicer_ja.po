@@ -15764,10 +15764,10 @@ msgid "Could not connect to SimplyPrint"
 msgstr ""
 
 msgid "Internal error"
-msgstr ""
+msgstr "内部エラー"
 
 msgid "Unknown error"
-msgstr ""
+msgstr "不明なエラー"
 
 msgid "SimplyPrint account not linked. Go to Connect options to set it up."
 msgstr ""
@@ -15776,7 +15776,7 @@ msgid "Connection to Flashforge works correctly."
 msgstr ""
 
 msgid "Could not connect to Flashforge"
-msgstr ""
+msgstr "Flashforgeに接続できませんでした"
 
 msgid "The provided state is not correct."
 msgstr ""
