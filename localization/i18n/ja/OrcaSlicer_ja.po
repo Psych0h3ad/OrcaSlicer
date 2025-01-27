@@ -14488,19 +14488,19 @@ msgid "Ok"
 msgstr "Ok"
 
 msgid "The filament must be selected."
-msgstr "The filament must be selected."
+msgstr "フィラメントが選択されている必要があります"
 
 msgid "Network lookup"
 msgstr "Network lookup"
 
 msgid "Address"
-msgstr "Address"
+msgstr "アドレス"
 
 msgid "Hostname"
-msgstr "Hostname"
+msgstr "ホスト名"
 
 msgid "Service name"
-msgstr "Service name"
+msgstr "サービス名"
 
 msgid "OctoPrint version"
 msgstr "OctoPrint version"
@@ -14526,16 +14526,16 @@ msgid "PA Calibration"
 msgstr "PA Calibration"
 
 msgid "DDE"
-msgstr ""
+msgstr "ダイレクトドライブエクストルーダー"
 
 msgid "Bowden"
-msgstr "Bowden"
+msgstr "ボーデン式エクストルーダー"
 
 msgid "Extruder type"
-msgstr ""
+msgstr "エクストルーダー（押出機）タイプ"
 
 msgid "PA Tower"
-msgstr "PA Tower"
+msgstr "PAタワー"
 
 msgid "PA Line"
 msgstr "PA Line"
@@ -14544,13 +14544,13 @@ msgid "PA Pattern"
 msgstr "PA Pattern"
 
 msgid "Start PA: "
-msgstr "Start PA:"
+msgstr "開始PA値:"
 
 msgid "End PA: "
-msgstr "End PA: "
+msgstr "終了PA値: "
 
 msgid "PA step: "
-msgstr "PA step:"
+msgstr "PAステップ:"
 
 msgid "Print numbers"
 msgstr "Print numbers"
@@ -14591,13 +14591,13 @@ msgid "PET-CF"
 msgstr "PET-CF"
 
 msgid "Filament type"
-msgstr "Filament type"
+msgstr "フィラメントの種類"
 
 msgid "Start temp: "
-msgstr "Start temp:"
+msgstr "開始温度:"
 
 msgid "End temp: "
-msgstr "End temp:"
+msgstr "終了温度:"
 
 msgid "Temp step: "
 msgstr "Temp step:"
@@ -14689,10 +14689,10 @@ msgstr "Host"
 
 msgctxt "OfFile"
 msgid "Size"
-msgstr "Size of file"
+msgstr "ファイルサイズ"
 
 msgid "Filename"
-msgstr "Filename"
+msgstr "ファイル名"
 
 msgid "Cancel selected"
 msgstr "Cancel selected"
@@ -14707,7 +14707,7 @@ msgid "Uploading"
 msgstr "アップロード中"
 
 msgid "Cancelling"
-msgstr "Canceling"
+msgstr "キャンセル中"
 
 msgid "Error uploading to print host"
 msgstr "プリントホストへのアップロードに失敗"
