@@ -320,6 +320,22 @@ jobs:
           name: Snapmaker_Orca_Windows_${{ env.ver }}_portable
           path: ${{ github.workspace }}/build/Snapmaker_Orca
 
+      - name: Compile comparison baseline
+        if: inputs.os == 'windows-2022'
+        shell: pwsh
+        run: |
+          $baselineSource = git show bac6fd5c1:src/slic3r/GUI/Plater.cpp
+          [IO.File]::WriteAllText((Join-Path $PWD 'src/slic3r/GUI/Plater.cpp'), ($baselineSource -join "`n"), [Text.UTF8Encoding]::new($false))
+          cmake --build build --config Release --target Snapmaker_Orca -- /m:2
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Upload comparison baseline DLL
+        if: inputs.os == 'windows-2022'
+        uses: actions/upload-artifact@v4
+        with:
+          name: hf-calibration-baseline-dll
+          path: ${{ github.workspace }}/build/src/Release/Snapmaker_Orca.dll
+
       - name: Upload artifacts Win installer
         if: inputs.os == 'windows-2022'
         uses: actions/upload-artifact@v4
