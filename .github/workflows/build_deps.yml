@@ -176,7 +176,7 @@ jobs:
   upload_symbols:
     name: Upload Debug Symbols to Sentry
     needs: [build_orca]
-    if: ${{ !cancelled() && needs.build_orca.result == 'success' }}
+    if: false
     uses: ./.github/workflows/sentry_cli.yml
     with:
       os: ${{ inputs.os }}

@@ -296,19 +296,19 @@ jobs:
         run: .\build_release_vs2022.bat slicer
 
       - name: Create installer Win
-        if: inputs.os == 'windows-2022'
+        if: false
         working-directory: ${{ github.workspace }}/build
         run: |
           cpack -G NSIS
 
       - name: Pack app
-        if: inputs.os == 'windows-2022'
+        if: false
         working-directory: ${{ github.workspace }}/build
         shell: cmd
         run: '"C:/Program Files/7-Zip/7z.exe" a -tzip Snapmaker_Orca_Windows_${{ env.ver }}_portable.zip ${{ github.workspace }}/build/Snapmaker_Orca'
 
       - name: Pack PDB
-        if: inputs.os == 'windows-2022'
+        if: false
         working-directory: ${{ github.workspace }}/build/src/Release
         shell: cmd
         run: '"C:/Program Files/7-Zip/7z.exe" a -m0=lzma2 -mx9 Debug_PDB_${{ env.ver }}_for_developers_only.7z  *.pdb'
@@ -337,21 +337,21 @@ jobs:
           path: ${{ github.workspace }}/build/src/Release/Snapmaker_Orca.dll
 
       - name: Upload artifacts Win installer
-        if: inputs.os == 'windows-2022'
+        if: false
         uses: actions/upload-artifact@v4
         with:
           name: Snapmaker_Orca_Windows_${{ env.ver }}
           path: ${{ github.workspace }}/build/Snapmaker_Orca*.exe
 
       - name: Upload artifacts Win PDB
-        if: inputs.os == 'windows-2022'
+        if: false
         uses: actions/upload-artifact@v4
         with:
           name: PDB
           path: ${{ github.workspace }}/build/src/Release/Debug_PDB_${{ env.ver }}_for_developers_only.7z
 
       - name: Upload Snapmaker_Orca_profile_validator Win
-        if: inputs.os == 'windows-2022'
+        if: false
         uses: actions/upload-artifact@v4
         with:
           name: Snapmaker_Orca_profile_validator_Windows_${{ env.ver }}
