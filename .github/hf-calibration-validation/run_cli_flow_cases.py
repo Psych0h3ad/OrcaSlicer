@@ -54,6 +54,7 @@ dll = args.exe.parent / 'Snapmaker_Orca.dll'
 if dll.exists():
     result['dll_sha256'] = hashlib.sha256(dll.read_bytes()).hexdigest()
 report = folder.parent / 'outputs' / ('cli-' + args.label + '-results.json')
+report.parent.mkdir(parents=True, exist_ok=True)
 report.write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
 print(report)
 raise SystemExit(0 if result['all_pass'] else 1)
