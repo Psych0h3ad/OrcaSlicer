@@ -1,0 +1,47 @@
+[
+  {
+    "name": "standard-cap20",
+    "input": "standard-cap20.3mf",
+    "active_flow_ratio": 0.95,
+    "limit_mm3_s": 20,
+    "feed_mm_s": 300,
+    "expected_long_wall_flow_mm3_s": 20,
+    "scope": "Ordinary CLI slice with pre-set configuration; does not call Plater::calib_max_vol_speed."
+  },
+  {
+    "name": "standard-cap200",
+    "input": "standard-cap200.3mf",
+    "active_flow_ratio": 0.95,
+    "limit_mm3_s": 200,
+    "feed_mm_s": 300,
+    "expected_long_wall_flow_mm3_s": 57.577060000591125,
+    "scope": "Ordinary CLI slice with pre-set configuration; does not call Plater::calib_max_vol_speed."
+  },
+  {
+    "name": "high-flow-cap40",
+    "input": "high-flow-cap40.3mf",
+    "active_flow_ratio": 0.8,
+    "limit_mm3_s": 40,
+    "feed_mm_s": 300,
+    "expected_long_wall_flow_mm3_s": 40,
+    "scope": "Ordinary CLI slice with pre-set configuration; does not call Plater::calib_max_vol_speed."
+  },
+  {
+    "name": "high-flow-cap200",
+    "input": "high-flow-cap200.3mf",
+    "active_flow_ratio": 0.8,
+    "limit_mm3_s": 200,
+    "feed_mm_s": 300,
+    "expected_long_wall_flow_mm3_s": 48.48594526365569,
+    "scope": "Ordinary CLI slice with pre-set configuration; does not call Plater::calib_max_vol_speed."
+  },
+  {
+    "name": "mixed-custom-high-flow-cap200",
+    "input": "mixed-custom-high-flow-cap200.3mf",
+    "active_flow_ratio": 0.8,
+    "limit_mm3_s": 200,
+    "feed_mm_s": 300,
+    "expected_long_wall_flow_mm3_s": 48.48594526365569,
+    "scope": "Ordinary CLI slice with pre-set configuration; does not call Plater::calib_max_vol_speed."
+  }
+]

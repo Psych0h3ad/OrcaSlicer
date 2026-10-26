@@ -1,11 +1,41 @@
-name: HF calibration Windows validation
+name: HF calibration CLI validation
 
 on:
   workflow_dispatch:
+    inputs:
+      build_run_id:
+        description: Build run containing the patched Windows portable artifact
+        required: true
+        default: '40345452896'
+        type: string
+
+permissions:
+  contents: read
+  actions: read
 
 jobs:
   windows:
-    uses: ./.github/workflows/build_check_cache.yml
-    with:
-      os: windows-2022
-      build-deps-only: false
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: Snapmaker_Orca_Windows_V2.4.1_portable
+          path: portable
+          run-id: ${{ inputs.build_run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Verify CLI flow variants and limits
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem -LiteralPath portable -Filter snapmaker-orca.exe -Recurse | Select-Object -First 1
+          if ($null -eq $exe) { throw 'Portable executable not found' }
+          python .github/hf-calibration-validation/run_cli_flow_cases.py --exe $exe.FullName --label patched-windows
+          exit $LASTEXITCODE
+      - name: Upload CLI validation results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hf-calibration-cli-results
+          path: |
+            .github/outputs/
+            .github/hf-calibration-validation/cli-patched-windows/
