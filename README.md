@@ -1,3 +1,18 @@
+# Snapmaker Orca 2.4.1 Portable for Windows
+
+[ダウンロード](https://github.com/Psych0h3ad/OrcaSlicer/releases/tag/portable-v2.4.1-1) · [使い方と再作成手順](portable/README.md)
+
+ZIPを展開して `Start-Snapmaker-Orca.cmd` を実行します。設定は `App/data_dir` に保存します。
+公式のポータブル版を再配置したもので、本体のバイナリは変更していません。WebView2 Runtimeが必要です。
+
+管理者権限なしで初回設定画面まで確認済みです。CLIスライス試験はアクセス違反で終了しました。
+GUIでのスライスと実機印刷は未確認です。詳細は [検証結果](portable/検証結果.txt) を参照してください。
+
+このブランチは [Snapmaker/OrcaSlicer v2.4.1](https://github.com/Snapmaker/OrcaSlicer/tree/v2.4.1) を基点にしています。
+本体のライセンスは [AGPL v3](LICENSE.txt) です。
+
+---
+
 
 <h1> <p "font-size:200px;"> Snapmaker Orca</p> </h1>
 

@@ -1,0 +1,6 @@
+/downloads/
+/Snapmaker-Orca-2.4.1-Portable/
+/*.zip
+/*.zip.sha256
+__pycache__/
+*.py[cod]
