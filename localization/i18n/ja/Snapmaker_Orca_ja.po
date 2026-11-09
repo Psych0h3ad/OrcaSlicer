@@ -17768,3 +17768,6 @@ msgstr "これらのフィラメントは%1%mmのHFノズルでは印刷でき�
 
 msgid "Warning:%1%mm High Flow nozzles are not recommended for %2%"
 msgstr "注意：%1%mmのHFノズルは%2%には推奨されていません"
+
+msgid "Using Standard preset values for filaments without High Flow settings: %1%."
+msgstr "HF用の設定がないため、標準の値を使用します：フィラメント%1%"

@@ -220,6 +220,7 @@ void FilamentGroupDialog::update_warnings()
     bool                           missing_standard   = false;
     bool                           missing_high       = false;
     bool                           unsupported        = false;
+    wxString                       standard_fallback;
     std::set<std::pair<bool, std::string>> messages;
     for (const FilamentInfo& info : m_filaments) {
         const bool high = m_mapping[info.filament_idx] == fvtHighFlow;
@@ -227,6 +228,11 @@ void FilamentGroupDialog::update_warnings()
         missing_standard |= !high && !standard_available;
         if (!high)
             continue;
+        if (!info.has_high_flow_settings) {
+            if (!standard_fallback.empty())
+                standard_fallback += ", ";
+            standard_fallback += wxString::Format("%zu", info.filament_idx + 1);
+        }
         const auto result = HighFlowCompat::check(info.type_raw, info.preset_name);
         if (result.level != HighFlowCompat::CompatibilityLevel::Compatible) {
             const bool error = result.level == HighFlowCompat::CompatibilityLevel::Unsupported;
@@ -244,6 +250,9 @@ void FilamentGroupDialog::update_warnings()
         add_warning(_L("No Standard nozzle is configured. Assign these filaments to High Flow or update the nozzle settings."), true);
     if (missing_high)
         add_warning(_L("No High Flow nozzle is configured. Assign these filaments to Standard or update the nozzle settings."), true);
+    if (!standard_fallback.empty())
+        add_warning(format_wxstr(_L("Using Standard preset values for filaments without High Flow settings: %1%."), standard_fallback),
+                    false);
     const std::string diameter = wxGetApp().preset_bundle->printers.get_edited_preset().config.opt_string("printer_variant");
     for (bool error : {false, true}) {
         wxString materials;

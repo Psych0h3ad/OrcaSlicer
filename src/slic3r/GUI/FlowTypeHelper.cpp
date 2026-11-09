@@ -255,8 +255,8 @@ bool prepare_for_slice(wxWindow* parent)
         return true;
     }
     const ReviewedAssignment state = current_assignment();
-    if (reviewed_assignment && reviewed_assignment->config == state.config && reviewed_assignment->filament_names == state.filament_names && reviewed_assignment->used_filaments == state.used_filaments &&
-        reviewed_assignment->compatibility == state.compatibility)
+    if (reviewed_assignment && reviewed_assignment->config == state.config && reviewed_assignment->filament_names == state.filament_names &&
+        reviewed_assignment->used_filaments == state.used_filaments && reviewed_assignment->compatibility == state.compatibility)
         return true;
     FilamentGroupDialog dialog(parent, distinct_nozzle_flow_type_count() < 2);
     return dialog.ShowModal() == wxID_OK;
