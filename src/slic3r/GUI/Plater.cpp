@@ -1338,7 +1338,8 @@ struct Sidebar::priv
     wxPanel* m_panel_printer_content = nullptr;
 
     // nozzle notebook  and related controls
-    CustomNotebook*                  m_nozzle_notebook{nullptr};
+    CustomNotebook*              m_nozzle_notebook{nullptr};
+    Button*                      m_flow_assignment_button{nullptr};
     std::vector<ComboBox*>       m_nozzle_diameter_lists;
     std::vector<ComboBox*>       m_nozzle_flow_lists;
     std::vector<ScalableButton*> m_nozzle_edit_btns;
@@ -2454,6 +2455,14 @@ Sidebar::Sidebar(Plater *parent)
         // 创建nozzle_sizer并添加notebook
         wxBoxSizer* nozzle_sizer = new wxBoxSizer(wxVERTICAL);
         nozzle_sizer->Add(p->m_nozzle_notebook, 1, wxEXPAND | wxALL, FromDIP(0));
+        p->m_flow_assignment_button = new Button(nozzle_container, _L("Filament flow assignment"));
+        p->m_flow_assignment_button->SetStyle(ButtonStyle::Regular, ButtonType::Window);
+        p->m_flow_assignment_button->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
+            const bool all_high_flow = GUI::FlowType::any_nozzle_high_flow() && GUI::FlowType::distinct_nozzle_flow_type_count() < 2;
+            GUI::FilamentGroupDialog dialog(this, all_high_flow);
+            dialog.ShowModal();
+        });
+        nozzle_sizer->Add(p->m_flow_assignment_button, 0, wxEXPAND | wxALL, FromDIP(8));
         nozzle_container->SetSizer(nozzle_sizer);
         nozzle_container->SetMinSize(wxSize(-1, FromDIP(80)));
 
@@ -9690,8 +9699,11 @@ void Sidebar::update_nozzle_settings(bool switch_machine)
             flow_combo->Enable(false);
         const std::vector<std::string> nozzle_flows = GUI::FlowType::nozzle_volume_types();
         flow_combo->SetSelection(i < nozzle_flows.size() && nozzle_flows[i] == FLOW_MODE_HIGH_FLOW ? 1 : 0);
-        flow_combo->Bind(wxEVT_COMBOBOX, [flow_combo, i](wxCommandEvent&) {
-            GUI::FlowType::set_nozzle_volume_type(i, flow_combo->GetSelection() == 1 ? FLOW_MODE_HIGH_FLOW : FLOW_MODE_STANDARD);
+        flow_combo->Bind(wxEVT_COMBOBOX, [this, flow_combo, i](wxCommandEvent&) {
+            const bool high_flow = flow_combo->GetSelection() == 1;
+            GUI::FlowType::set_nozzle_volume_type(i, high_flow ? FLOW_MODE_HIGH_FLOW : FLOW_MODE_STANDARD);
+            if (p->m_nozzle_notebook->GetPageCount() > 2 && i < p->m_nozzle_notebook->GetPageCount())
+                p->m_nozzle_notebook->SetPageText(i, wxString::Format("%zu %s", i + 1, high_flow ? "HF" : "STD"));
             // Do not event.Skip(): the sidebar-level wxEVT_COMBOBOX handler would treat this
             // combo as the bed-type combo (same reason as the diameter combo above).
         });
@@ -9728,16 +9740,19 @@ void Sidebar::update_nozzle_settings(bool switch_machine)
         {
             tab_name = wxString(_L("Nozzle")) + wxString::Format(" %d", i + 1);
         }
-            
         }
+        if (supports_high_flow && new_nozzle_count > 2)
+            tab_name = wxString::Format("%zu %s", i + 1, flow_combo->GetSelection() == 1 ? "HF" : "STD");
         p->m_nozzle_notebook->AddPage(nozzle_panel, tab_name);
     }
 
+    p->m_nozzle_notebook->SetToolTip(_L("HF: High Flow. STD: Standard. Select a nozzle to change its settings."));
+    if (p->m_flow_assignment_button != nullptr)
+        p->m_flow_assignment_button->Show(GUI::FlowType::printer_supports_high_flow());
     p->m_nozzle_notebook->Layout();
     p->m_nozzle_notebook->Thaw();
     p->m_nozzle_notebook->InvalidateBestSize();
-    if (p->m_nozzle_notebook->GetParent() != nullptr)
-    {
+    if (p->m_nozzle_notebook->GetParent() != nullptr) {
         p->m_nozzle_notebook->GetParent()->InvalidateBestSize();
     }
     p->m_panel_printer_content->InvalidateBestSize();
