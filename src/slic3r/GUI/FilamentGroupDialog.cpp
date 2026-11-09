@@ -92,12 +92,11 @@ FilamentGroupDialog::FilamentGroupDialog(wxWindow* parent, bool default_all_high
     auto* flow_heading = new wxStaticText(m_list, wxID_ANY, _L("Max volumetric speed"));
     flow_heading->Wrap(FromDIP(136));
     rows->Add(flow_heading, 0, wxALIGN_CENTER_VERTICAL);
+    std::vector<wxStaticText*> numbers;
     for (const FilamentInfo& info : m_filaments) {
         auto* number = new wxStaticText(m_list, wxID_ANY, wxString::Format("%zu", info.filament_idx + 1), wxDefaultPosition,
                                         wxSize(FromDIP(28), FromDIP(28)), wxALIGN_CENTER);
-        number->SetBackgroundColour(info.color);
-        const double luminance = 0.299 * info.color.Red() + 0.587 * info.color.Green() + 0.114 * info.color.Blue();
-        number->SetForegroundColour(luminance < 160.0 ? *wxWHITE : *wxBLACK);
+        numbers.push_back(number);
         rows->Add(number, 0, wxALIGN_CENTER_VERTICAL);
 
         auto* name = new wxStaticText(m_list, wxID_ANY, from_u8(info.preset_name), wxDefaultPosition, wxSize(FromDIP(288), -1),
@@ -148,6 +147,13 @@ FilamentGroupDialog::FilamentGroupDialog(wxWindow* parent, bool default_all_high
     Fit();
     CenterOnParent();
     wxGetApp().UpdateDlgDarkUI(this);
+    // Filament colors must not be changed by the generic dark-mode color walk.
+    for (size_t row = 0; row < m_filaments.size(); ++row) {
+        const wxColour& color = m_filaments[row].color;
+        numbers[row]->SetBackgroundColour(color);
+        const double luminance = 0.299 * color.Red() + 0.587 * color.Green() + 0.114 * color.Blue();
+        numbers[row]->SetForegroundColour(luminance < 160.0 ? *wxWHITE : *wxBLACK);
+    }
 }
 
 void FilamentGroupDialog::load_filaments()
@@ -271,8 +277,10 @@ void FilamentGroupDialog::update_warnings()
                         error);
     }
     m_confirm_button->Enable(!unsupported && !missing_standard && !missing_high);
+    wxSize size = GetSize();
+    size.IncTo(GetSizer()->ComputeFittingWindowSize(this));
+    SetSize(size);
     Layout();
-    Fit();
 }
 
 void FilamentGroupDialog::on_dpi_changed(const wxRect&)

@@ -991,6 +991,15 @@ public:
 
     wxWindow* GetPage(size_t index) const { return (index < m_tabs.size()) ? m_tabs[index].page : nullptr; }
 
+    void SetPageText(size_t index, const wxString& text)
+    {
+        if (index >= m_tabs.size() || m_tabs[index].text == text)
+            return;
+        m_tabs[index].text = text;
+        InvalidateBestSize();
+        Refresh();
+    }
+
     int GetSelection() const { return m_selectedIndex; }
 
     void SetSelection(size_t index)
