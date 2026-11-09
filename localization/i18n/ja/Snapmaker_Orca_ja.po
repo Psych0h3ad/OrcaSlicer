@@ -17868,6 +17868,9 @@ msgstr "標準設定で使用する"
 msgid "Use HF values anyway"
 msgstr "HF設定をそのまま使用する"
 
+msgid "Add HF"
+msgstr "HFを追加"
+
 msgid "Add HF settings"
 msgstr "HF設定を追加"
 

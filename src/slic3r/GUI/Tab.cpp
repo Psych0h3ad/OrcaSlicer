@@ -981,6 +981,33 @@ void Tab::refresh_flow_variant_view()
             });
             controls->Add(compare, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, FromDIP(12));
         }
+        if (m_flow_variant_view->domain == ConfigFlowDomain::Filament &&
+            std::find(modes.begin(), modes.end(), FLOW_MODE_STANDARD) != modes.end() &&
+            std::find(modes.begin(), modes.end(), FLOW_MODE_HIGH_FLOW) == modes.end()) {
+            auto* add = new Button(m_flow_variant_view->controls, _L("Add HF"));
+            add->SetStyle(ButtonStyle::Regular, ButtonType::Parameter);
+            add->SetMinSize(FromDIP(wxSize(100, 32)));
+            add->SetBackgroundColour(m_flow_variant_view->controls->GetBackgroundColour());
+            add->SetToolTip(_L("Start with the Standard values and enter calibrated HF values. Standard settings and the "
+                               "original preset are preserved."));
+            add->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
+                // Selecting the new preset rebuilds this header and destroys the
+                // Add HF button. Finish its event before replacing the controls.
+                CallAfter([this] {
+                    const std::string name = FlowType::create_high_flow_preset(this, m_presets->get_edited_preset().name);
+                    if (name.empty())
+                        return;
+
+                    const std::string previous_mode    = m_flow_variant_view->selected_mode;
+                    m_flow_variant_view->selected_mode = FLOW_MODE_HIGH_FLOW;
+                    if (!select_preset(name))
+                        m_flow_variant_view->selected_mode = previous_mode;
+                    refresh_flow_variant_view();
+                    m_parent->Layout();
+                });
+            });
+            controls->Add(add, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, FromDIP(12));
+        }
         m_flow_variant_view->controls->SetSizer(controls);
         m_parent->get_page_header_sizer()->Add(m_flow_variant_view->controls, 0, wxALIGN_CENTER_VERTICAL | wxALL, FromDIP(4));
         m_flow_variant_view->selector->bindSelectionCallback([this](int index) {
@@ -1028,7 +1055,8 @@ void Tab::update_flow_variant_view_visibility()
     const bool active_page_supports_flow_variants = m_flow_variant_view &&
                                                     std::any_of(m_flow_variant_view->pages.begin(), m_flow_variant_view->pages.end(),
                                                                 [this](const PageShp& page) { return m_active_page == page.get(); });
-    const bool show = active_page_supports_flow_variants && m_flow_variant_view->selector && m_flow_variant_view->modes.size() > 1;
+    const bool show = active_page_supports_flow_variants && m_flow_variant_view->selector &&
+                      (m_flow_variant_view->domain == ConfigFlowDomain::Filament || m_flow_variant_view->modes.size() > 1);
 
     if (m_flow_variant_view && m_flow_variant_view->selector) {
         // Reveal only this tab's selector; hide any sibling selector left visible by

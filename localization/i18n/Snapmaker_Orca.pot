@@ -16327,3 +16327,6 @@ msgstr ""
 msgid "Rebuild toolpath geometry on the GPU: much faster preview loading and lower memory on capable graphics cards. If the preview moves slower than before (for example on basic integrated graphics), turn this off to use the compatible renderer. Takes effect when the preview is reloaded."
 msgstr ""
 
+
+msgid "Add HF"
+msgstr ""
