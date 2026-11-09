@@ -23,6 +23,7 @@
 #include <boost/algorithm/string.hpp>
 
 #include <algorithm>
+#include <charconv>
 #include <cmath>
 #include <cstring>
 #include <memory>
@@ -391,7 +392,11 @@ public:
             auto* standard_value  = new wxStaticText(this, wxID_ANY, wxString::Format(format, baseline) + (unit.empty() ? "" : " " + unit),
                                                      wxDefaultPosition, wxSize(FromDIP(130), -1), wxALIGN_RIGHT);
             grid->Add(standard_value, 0, wxALIGN_CENTER_VERTICAL);
-            auto* input = new TextInput(this, wxString::Format(format, value), unit);
+            char           buffer[64];
+            const auto     converted     = std::to_chars(buffer, buffer + sizeof(buffer), value);
+            const wxString initial_value = converted.ec == std::errc{} ? from_u8(std::string(buffer, converted.ptr)) :
+                                                                         wxString::Format(format, value);
+            auto*          input         = new TextInput(this, initial_value, unit);
             input->SetMinSize(FromDIP(wxSize(180, 32)));
             grid->Add(input, 1, wxEXPAND);
             inputs.emplace_back(key, input);
