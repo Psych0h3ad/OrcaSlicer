@@ -82,14 +82,16 @@ FilamentGroupDialog::FilamentGroupDialog(wxWindow* parent, bool default_all_high
     m_list = new wxScrolledWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL | wxTAB_TRAVERSAL);
     m_list->SetBackgroundColour(background);
     m_list->SetScrollRate(0, FromDIP(24));
-    const int visible_rows = std::clamp(int(m_filaments.size()), 1, 5);
-    m_list->SetMinSize(wxSize(-1, FromDIP(32 + visible_rows * 56)));
+    const int visible_rows = std::clamp(int(m_filaments.size()), 1, 4);
+    m_list->SetMinSize(wxSize(-1, FromDIP(40 + visible_rows * 48)));
     auto* rows = new wxFlexGridSizer(0, 4, FromDIP(12), FromDIP(12));
     rows->AddGrowableCol(1);
     rows->AddSpacer(FromDIP(28));
     rows->Add(new wxStaticText(m_list, wxID_ANY, _L("Filament")), 0, wxALIGN_CENTER_VERTICAL);
     rows->Add(new wxStaticText(m_list, wxID_ANY, _L("Flow settings")), 0, wxALIGN_CENTER_VERTICAL);
-    rows->Add(new wxStaticText(m_list, wxID_ANY, _L("Max volumetric speed")), 0, wxALIGN_CENTER_VERTICAL);
+    auto* flow_heading = new wxStaticText(m_list, wxID_ANY, _L("Max volumetric speed"));
+    flow_heading->Wrap(FromDIP(136));
+    rows->Add(flow_heading, 0, wxALIGN_CENTER_VERTICAL);
     for (const FilamentInfo& info : m_filaments) {
         auto* number = new wxStaticText(m_list, wxID_ANY, wxString::Format("%zu", info.filament_idx + 1), wxDefaultPosition,
                                         wxSize(FromDIP(28), FromDIP(28)), wxALIGN_CENTER);
@@ -242,12 +244,21 @@ void FilamentGroupDialog::update_warnings()
     if (missing_high)
         add_warning(_L("No High Flow nozzle is configured. Assign these filaments to Standard or update the nozzle settings."), true);
     const std::string diameter = wxGetApp().preset_bundle->printers.get_edited_preset().config.opt_string("printer_variant");
-    for (const auto& [error, material] : messages) {
-        const wxString label = material == "CF/GF filaments" ? _L("CF/GF filaments") : from_u8(material);
-        add_warning(error ? format_wxstr(_L("These filaments cannot be printed with the %1%mm high flow nozzle: %2%"), from_u8(diameter),
-                                         label) :
-                            format_wxstr(_L("Warning:%1%mm High Flow nozzles are not recommended for %2%"), from_u8(diameter), label),
-                    error);
+    for (bool error : {false, true}) {
+        wxString materials;
+        for (const auto& [is_error, material] : messages) {
+            if (is_error != error)
+                continue;
+            if (!materials.empty())
+                materials += ", ";
+            materials += material == "CF/GF filaments" ? _L("CF/GF filaments") : from_u8(material);
+        }
+        if (!materials.empty())
+            add_warning(error ?
+                            format_wxstr(_L("These filaments cannot be printed with the %1%mm high flow nozzle: %2%"), from_u8(diameter),
+                                         materials) :
+                            format_wxstr(_L("Warning:%1%mm High Flow nozzles are not recommended for %2%"), from_u8(diameter), materials),
+                        error);
     }
     m_confirm_button->Enable(!unsupported && !missing_standard && !missing_high);
     Layout();
