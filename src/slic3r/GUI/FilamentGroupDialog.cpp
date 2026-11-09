@@ -199,7 +199,7 @@ void FilamentGroupDialog::update_assignments()
         const bool         high  = m_mapping[index] == fvtHighFlow;
         high_count += high;
         m_choices[row]->SetSelection(high ? 1 : 0);
-        wxString detail = max_flow ? wxString::Format("%.1f mm³/s", get_value_at(preview, *max_flow, ConfigFlowDomain::Filament, index)) :
+        wxString detail = max_flow ? wxString::Format(L"%.1f mm\u00b3/s", get_value_at(preview, *max_flow, ConfigFlowDomain::Filament, index)) :
                                      wxString();
         if (ratio)
             detail += "\n" + _L("Flow ratio") +
