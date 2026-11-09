@@ -1,32 +1,36 @@
 name: U1 HF Windows validation
 on:
   workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
 jobs:
-  dependencies:
+  windows:
     runs-on: windows-2022
     steps:
       - uses: actions/checkout@v5
         with:
           submodules: recursive
           lfs: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: u1-hf-ux-windows-dependencies
+          run-id: 42550720030
+          github-token: ${{ github.token }}
+          path: deps/build/OrcaSlicer_dep
       - uses: lukka/get-cmake@latest
         with:
           cmakeVersion: '~3.28.0'
       - uses: microsoft/setup-msbuild@v2
-      - uses: actions/cache@v4
-        id: deps
-        with:
-          path: deps/build/OrcaSlicer_dep
-          key: u1-hf-ux-windows-deps-${{ hashFiles('deps/**', 'cmake/modules/**') }}
-      - name: Build Windows dependencies
-        if: steps.deps.outputs.cache-hit != 'true'
+      - name: Build application
         shell: pwsh
         run: |
-          choco install strawberryperl --no-progress -y
-          .\build_release_vs2022.bat deps
+          .\build_release_vs2022.bat slicer
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          if (!(Test-Path build/Snapmaker_Orca/snapmaker-orca.exe)) { throw 'Portable executable missing' }
+          Get-FileHash build/Snapmaker_Orca/Snapmaker_Orca.dll -Algorithm SHA256
       - uses: actions/upload-artifact@v4
         with:
-          name: u1-hf-ux-windows-dependencies
-          path: deps/build/OrcaSlicer_dep
+          name: u1-hf-ux-windows-portable
+          path: build/Snapmaker_Orca
           retention-days: 14
