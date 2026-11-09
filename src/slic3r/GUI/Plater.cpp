@@ -14679,13 +14679,8 @@ void Plater::priv::set_current_panel(wxPanel* panel, bool no_slice)
                     // plate) surface here too.
                     bool guard_passed = this->q->guard_before_slice_plate();
                     bool grouping_confirmed = true;
-                    if (guard_passed && GUI::FlowType::any_nozzle_high_flow()) {
-                        bool all_high_flow = GUI::FlowType::distinct_nozzle_flow_type_count() < 2;
-                        GUI::FilamentGroupDialog dlg(q, all_high_flow);
-                        grouping_confirmed = dlg.ShowModal() == wxID_OK;
-                    } else if (guard_passed) {
-                        GUI::FlowType::sync_filament_volume_types_for_slice();
-                    }
+                    if (guard_passed)
+                        grouping_confirmed = GUI::FlowType::prepare_for_slice(q);
                     if (guard_passed && grouping_confirmed)
                         slice_cancelled = !(this->q->reslice());
                     else {
@@ -24255,16 +24250,11 @@ int Plater::select_sliced_plate(int plate_index)
     int ret = 0;
     BOOST_LOG_TRIVIAL(info) << "select_sliced_plate plate_idx=" << plate_index;
 
-    if (GUI::FlowType::any_nozzle_high_flow()) {
-        if (p->partplate_list.is_filament_group_dirty()) {
-            bool all_high_flow = GUI::FlowType::distinct_nozzle_flow_type_count() < 2;
-            GUI::FilamentGroupDialog dlg(this, all_high_flow);
-            if (dlg.ShowModal() != wxID_OK)
-                return 0;
-        }
-    } else {
-        GUI::FlowType::sync_filament_volume_types_for_slice();
-    }
+    // A valid cached slice already carries its reviewed assignment. Only a
+    // dirty result needs the shared pre-slice check.
+    if ((!GUI::FlowType::any_nozzle_high_flow() || p->partplate_list.is_filament_group_dirty()) &&
+        !GUI::FlowType::prepare_for_slice(this))
+        return 0;
 
     Freeze();
     ret = select_plate(plate_index, true);

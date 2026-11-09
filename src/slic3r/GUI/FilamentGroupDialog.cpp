@@ -136,6 +136,7 @@ FilamentGroupDialog::FilamentGroupDialog(wxWindow* parent, bool default_all_high
         if (FlowType::distinct_nozzle_flow_type_count() > 1 && FlowType::grouping_mode() != FILAMENT_GROUPING_CUSTOM)
             FlowType::set_grouping_mode(FILAMENT_GROUPING_CUSTOM);
         FlowType::apply_custom_mapping(m_mapping);
+        FlowType::remember_assignment();
         EndModal(wxID_OK);
     });
     buttons->GetCANCEL()->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { EndModal(wxID_CANCEL); });
